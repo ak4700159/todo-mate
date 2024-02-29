@@ -41,9 +41,11 @@ class LoginScreen extends StatelessWidget {
                           child: TextButton(
                             onPressed: () {
                               showDialog(
+                                  barrierDismissible: false,
                                   context: context,
                                   builder: (BuildContext context) {
                                     return AlertDialog(
+                                      surfaceTintColor: Colors.white,
                                       backgroundColor: Colors.white,
                                       shape: Border.all(width: 1),
                                       content: const Text('게스트로 로그인 하시겠습니까?'),
@@ -59,8 +61,10 @@ class LoginScreen extends StatelessWidget {
                                         TextButton(
                                           onPressed: () {
                                             Navigator.push(
-                                                context,
-                                                MaterialPageRoute(builder: (context) => PeedSreen()),
+                                              context,
+                                              MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      PeedSreen()),
                                             );
                                           },
                                           child: const Text(

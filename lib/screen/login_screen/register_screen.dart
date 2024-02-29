@@ -1,5 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/painting.dart';
+import 'package:flutter/rendering.dart';
+import 'package:flutter/widgets.dart';
 
 class RegisterScreen extends StatelessWidget {
   RegisterScreen({super.key});
@@ -30,30 +33,44 @@ class RegisterScreen extends StatelessWidget {
                 key: _formKey,
                 child: Column(
                   children: [
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: '아이디'),
-                      validator: (value) {
-                        if (value?.isEmpty ?? false) {
-                          return "아이디를 입력하세요";
-                        }
+                    Row(
+                      children: [
+                        Expanded(
+                          flex: 5,
+                          child: TextFormField(
+                            decoration: const InputDecoration(labelText: '아이디'),
+                            validator: (value) {
+                              if (value?.isEmpty ?? false) {
+                                return "아이디를 입력하세요";
+                              }
 
-                        if((value?.length ?? 0) < 5){
-                          return "5글자 이상의 길이가 필요합니다";
-                        }
+                              if ((value?.length ?? 0) < 5) {
+                                return "5글자 이상의 길이가 필요합니다";
+                              }
 
-                        if(true){
-                          // 서버로부터 중복되는 아이디 있는 확인
-                          // 비동기 함수?로 구현
-                        }
-                        return null;
-                      },
-                      onSaved: (value) {
-                        id = value;
-                      },
+                              if (true) {
+                                // 서버로부터 중복되는 아이디 있는 확인
+                                // 비동기 함수?로 구현
+                              }
+                              return null;
+                            },
+                            onSaved: (value) {
+                              id = value;
+                            },
+                          ),
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: OutlinedButton(
+                            onPressed: () {},
+                            child: const Text('중복확인'),
+                          ),
+                        ),
+                      ],
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: '비밀번호'),
-                      validator: (value){
+                      validator: (value) {
                         if (value?.isEmpty ?? false) {
                           return "비밀번호를 입력하세요";
                         }
@@ -62,10 +79,10 @@ class RegisterScreen extends StatelessWidget {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: '비밀번호 재입력'),
-                      onSaved: (value){
+                      onSaved: (value) {
                         passwd = value;
                       },
-                      validator: (value){
+                      validator: (value) {
                         if (value?.isEmpty ?? false) {
                           return "비밀번호를 입력하세요";
                         }
@@ -74,10 +91,10 @@ class RegisterScreen extends StatelessWidget {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: '이름'),
-                      onSaved: (value){
+                      onSaved: (value) {
                         name = value;
                       },
-                      validator: (value){
+                      validator: (value) {
                         if (value?.isEmpty ?? false) {
                           return "이름을 입력하세요";
                         }
@@ -86,10 +103,10 @@ class RegisterScreen extends StatelessWidget {
                     ),
                     TextFormField(
                       decoration: const InputDecoration(labelText: '이메일'),
-                      onSaved: (value){
+                      onSaved: (value) {
                         email = value;
                       },
-                      validator: (value){
+                      validator: (value) {
                         if (value?.isEmpty ?? false) {
                           return "이메일을 입력하세요";
                         }
@@ -101,9 +118,10 @@ class RegisterScreen extends StatelessWidget {
               ),
               TextButton(
                 onPressed: () {
-                  if(_formKey.currentState?.validate() ?? false){
+                  if (_formKey.currentState?.validate() ?? false) {
                     _formKey.currentState?.save();
-                    print('id : $id, passwd : $passwd, name : $name, email : $email');
+                    print(
+                        'id : $id, passwd : $passwd, name : $name, email : $email');
                   }
                 },
                 child: Text(

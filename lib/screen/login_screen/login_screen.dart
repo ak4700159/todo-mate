@@ -2,8 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:todomate/screen/login_screen/login_popup.dart';
-import 'package:todomate/screen/login_screen/register_screen.dart';
-import 'package:todomate/screen/peed_screen/peed_screen.dart';
 
 class LoginScreen extends StatelessWidget {
   const LoginScreen({super.key});
@@ -60,12 +58,7 @@ class LoginScreen extends StatelessWidget {
                                         ),
                                         TextButton(
                                           onPressed: () {
-                                            Navigator.push(
-                                              context,
-                                              MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      PeedSreen()),
-                                            );
+                                            Navigator.pushNamedAndRemoveUntil(context, '/entry_point', (route) => false);
                                           },
                                           child: const Text(
                                             '게스트로 시작',
@@ -114,11 +107,7 @@ class LoginScreen extends StatelessWidget {
                     children: [
                       TextButton(
                         onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => RegisterScreen()),
-                          );
+                          Navigator.pushNamed(context, '/register_screen');
                         },
                         child: const Text(
                           '가입하기',

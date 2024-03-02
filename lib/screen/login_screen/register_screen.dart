@@ -4,29 +4,56 @@ import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
 
-class RegisterScreen extends StatelessWidget {
+import '../../function/id_check_function.dart';
+
+class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
 
+  @override
+  State<RegisterScreen> createState() => _RegisterScreenState();
+}
+
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _textIdController = TextEditingController();
+
+  void printController(){
+    print('controller text : ${_textIdController.text}');
+    print('controller selection : ${_textIdController.selection}');
+  }
+
+  void updateController(){
+    _textIdController.value = TextEditingValue(
+      text: "hello",
+      selection: TextSelection.fromPosition(TextPosition(offset: _textIdController.text.length)),
+    );
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _textIdController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
     String? passwd;
     String? copyPasswd;
-    String? id;
+    String? id = "";
     String? name;
     String? email;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           '회원가입',
         ),
       ),
       body: SingleChildScrollView(
         child: Container(
-          margin: EdgeInsets.all(8),
-          padding: EdgeInsets.all(8),
+          margin: const EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               Form(
@@ -38,21 +65,20 @@ class RegisterScreen extends StatelessWidget {
                         Expanded(
                           flex: 5,
                           child: TextFormField(
-                            decoration: const InputDecoration(labelText: '아이디'),
+                            controller: _textIdController,
+                            decoration:
+                                const InputDecoration(labelText: '아이디'),
                             validator: (value) {
+                              String? result;
                               if (value?.isEmpty ?? false) {
-                                return "아이디를 입력하세요";
+                                result = "아이디를 입력하세요";
                               }
 
                               if ((value?.length ?? 0) < 5) {
-                                return "5글자 이상의 길이가 필요합니다";
+                                result = "5글자 이상의 길이가 필요합니다";
                               }
 
-                              if (true) {
-                                // 서버로부터 중복되는 아이디 있는 확인
-                                // 비동기 함수?로 구현
-                              }
-                              return null;
+                              return result;
                             },
                             onSaved: (value) {
                               id = value;
@@ -62,8 +88,16 @@ class RegisterScreen extends StatelessWidget {
                         Expanded(
                           flex: 2,
                           child: OutlinedButton(
-                            onPressed: () {},
-                            child: const Text('중복확인'),
+                            onPressed: () {
+                              printController();
+                              updateController();
+                            },
+                            child: const Text(
+                              '중복확인',
+                              style: TextStyle(
+                                fontSize: 12,
+                              ),
+                            ),
                           ),
                         ),
                       ],
@@ -124,7 +158,7 @@ class RegisterScreen extends StatelessWidget {
                         'id : $id, passwd : $passwd, name : $name, email : $email');
                   }
                 },
-                child: Text(
+                child: const Text(
                   '회원가입',
                 ),
               ),

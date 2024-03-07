@@ -3,8 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/painting.dart';
 import 'package:flutter/rendering.dart';
 import 'package:flutter/widgets.dart';
-
-import '../../function/id_check_function.dart';
+import 'package:todomate/function/email_check_function.dart';
 
 class RegisterScreen extends StatefulWidget {
   RegisterScreen({super.key});
@@ -16,25 +15,23 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
   final _textIdController = TextEditingController();
+  bool? emailCheckStatus;
 
-  void printController(){
+  //컨트롤러에 등록된 텍스트 필드 내용 터미널에 출력
+  void printController() {
     print('controller text : ${_textIdController.text}');
     print('controller selection : ${_textIdController.selection}');
   }
 
-  void updateController(){
+  // 컨트롤러에 등록된 텍스트 필드 내용 수동으로 변경
+  void updateController() {
     _textIdController.value = TextEditingValue(
       text: "hello",
-      selection: TextSelection.fromPosition(TextPosition(offset: _textIdController.text.length)),
+      selection: TextSelection.fromPosition(
+          TextPosition(offset: _textIdController.text.length)),
     );
   }
 
-  @override
-  void dispose() {
-    // TODO: implement dispose
-    _textIdController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,29 +56,34 @@ class _RegisterScreenState extends State<RegisterScreen> {
               Form(
                 key: _formKey,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Row(
                       children: [
                         Expanded(
                           flex: 5,
                           child: TextFormField(
-                            controller: _textIdController,
-                            decoration:
-                                const InputDecoration(labelText: '아이디'),
+                            decoration: const InputDecoration(labelText: '이메일'),
                             validator: (value) {
-                              String? result;
                               if (value?.isEmpty ?? false) {
-                                result = "아이디를 입력하세요";
+                                return "이메일을 입력하세요";
                               }
 
                               if ((value?.length ?? 0) < 5) {
-                                result = "5글자 이상의 길이가 필요합니다";
+                                return "5글자 이상의 길이가 필요합니다";
                               }
 
-                              return result;
+                              if (emailCheckStatus == null ||
+                                  emailCheckStatus == false) {
+                                return "이메일 확인 실패";
+                              }
+                              return null;
                             },
                             onSaved: (value) {
-                              id = value;
+                              email = value;
+                            },
+                            onChanged: (value){
+                              email = value;
                             },
                           ),
                         ),
@@ -89,8 +91,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                           flex: 2,
                           child: OutlinedButton(
                             onPressed: () {
-                              printController();
-                              updateController();
+                              // 서버에 이메일을 보내고 중복되는 이메일이 있는지 확인
+                              Future<bool> emailStatus = sendEmailToServer(email);
+                              emailStatus.then((value) {
+                                emailCheckStatus = value;
+                                setState(() {});
+                              });
                             },
                             child: const Text(
                               '중복확인',
@@ -102,7 +108,17 @@ class _RegisterScreenState extends State<RegisterScreen> {
                         ),
                       ],
                     ),
+                    emailCheckStatus == true || emailCheckStatus == null
+                        ? const Text(
+                            '양식에 맞는 이메일을 입력하시오',
+                            style: TextStyle(color: Colors.grey, fontSize: 12),
+                          )
+                        : const Text(
+                            '이메일 중복 (아이디 / 비밀찾기)',
+                            style: TextStyle(color: Colors.red, fontSize: 12),
+                          ),
                     TextFormField(
+                      obscureText: true,
                       decoration: const InputDecoration(labelText: '비밀번호'),
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
@@ -112,14 +128,20 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       },
                     ),
                     TextFormField(
+                      obscureText: true,
                       decoration: const InputDecoration(labelText: '비밀번호 재입력'),
-                      onSaved: (value) {
-                        passwd = value;
+                      onChanged: (value) {
+                        copyPasswd = value;
                       },
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
-                          return "비밀번호를 입력하세요";
+                          return "비밀번호를 다시 입력하세요";
                         }
+
+                        if (value != passwd) {
+                          return "비밀번호가 일차하지 않습니다.";
+                        }
+
                         return null;
                       },
                     ),
@@ -131,18 +153,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       validator: (value) {
                         if (value?.isEmpty ?? false) {
                           return "이름을 입력하세요";
-                        }
-                        return null;
-                      },
-                    ),
-                    TextFormField(
-                      decoration: const InputDecoration(labelText: '이메일'),
-                      onSaved: (value) {
-                        email = value;
-                      },
-                      validator: (value) {
-                        if (value?.isEmpty ?? false) {
-                          return "이메일을 입력하세요";
                         }
                         return null;
                       },

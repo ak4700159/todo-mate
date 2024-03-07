@@ -11,7 +11,7 @@ class Goal {
       required this.password});
 
   Goal.from(Map<String, dynamic> jsonData)
-      : id = jsonData["id"],
+      : id = jsonData["user_id"],
         email = jsonData["email"],
         profilePicture = jsonData["profile_pictures"],
         name = jsonData["name"],
@@ -20,7 +20,7 @@ class Goal {
         description = jsonData["description"];
 
   Map<String, dynamic> toJson() => {
-        "id": id,
+        "user_id": id,
         "name": name,
         "password": password,
         "email": email,

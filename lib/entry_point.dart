@@ -1,8 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:todomate/screen/my_page_screen/my_page_screen.dart';
 import 'package:todomate/screen/peed_screen(main)/peed_screen.dart';
-import 'model/todo.dart';
+import 'package:todomate/model/todos.dart';
 
 class EntryPoint extends StatefulWidget {
   const EntryPoint({super.key});
@@ -12,14 +13,7 @@ class EntryPoint extends StatefulWidget {
 }
 
 class _EntryPointState extends State<EntryPoint> {
-  List<Todo> todos = [];
   int _selectedBottomNavigation = 0;
-
-  @override
-  void initState() {
-    // TODO: implement initState
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +81,12 @@ class _EntryPointState extends State<EntryPoint> {
           });
         },
       ),
-      body: _selectedBottomNavigation == 0 ? PeedScreen() : MyPageScreen(),
+      body: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(create: (_) => Todos()),
+        ],
+        child: _selectedBottomNavigation == 0 ? PeedScreen() : MyPageScreen(),
+      ),
     );
   }
 }

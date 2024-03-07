@@ -59,6 +59,7 @@ class LoginScreen extends StatelessWidget {
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pushNamedAndRemoveUntil(context, '/entry_point', (route) => false);
+
                                           },
                                           child: const Text(
                                             '게스트로 시작',

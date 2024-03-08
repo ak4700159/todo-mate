@@ -20,19 +20,19 @@ class PeedScreen extends StatelessWidget {
                 onPressed: () {
                   todos.getData("");
                 },
-                child: Text('투두 가져오기'),
+                child: const Text('투두 가져오기'),
               ),
               TextButton(
                 onPressed: () {
                   todos.getData("");
                 },
-                child: Text('투두 추가하기'),
+                child: const Text('투두 추가하기'),
               ),
               TextButton(
                 onPressed: () {
                   todos.getData("");
                 },
-                child: Text('투두 하나씩 빼기'),
+                child: const Text('투두 하나씩 빼기'),
               ),
             ],
           ),

@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:todomate/function/login_function.dart';
 import 'package:todomate/screen/login_screen/register_screen.dart';
 
 
 showLoginPopup(BuildContext context) {
   final _formKey = GlobalKey<FormState>();
-  String? id;
+  String? email;
   String? passwd;
 
   showDialog(
@@ -17,7 +18,6 @@ showLoginPopup(BuildContext context) {
         backgroundColor: Colors.white,
         actionsPadding: EdgeInsets.all(8),
         shape: Border.all(width: 1),
-        scrollable: true,
         title: const Text('로그인'),
         content: Form(
           key: _formKey,
@@ -25,15 +25,15 @@ showLoginPopup(BuildContext context) {
             mainAxisSize: MainAxisSize.min,
             children: [
               TextFormField(
-                decoration: const InputDecoration(labelText: '아이디'),
+                decoration: const InputDecoration(labelText: '이메일'),
                 validator: (value){
                   if(value?.isEmpty ?? false){
-                    return '아이디를 입력하시오';
+                    return '이메일을 입력하시오';
                   }
                   return null;
                 },
                 onSaved: (value){
-                  id = value;
+                  email = value;
                 },
               ),
               TextFormField(
@@ -76,7 +76,10 @@ showLoginPopup(BuildContext context) {
             onPressed: () {
               if(_formKey.currentState?.validate() ?? false){
                 _formKey.currentState?.save();
-                print('id : $id, passwd : $passwd');
+                print('id : $email, passwd : $passwd');
+                // 자채적인 모의 시나리오를 위해서 무조건 로그인 성공을 가정
+                setLoginTrue();
+                Navigator.pushNamedAndRemoveUntil(context, '/entry_point', (route) => false);
               }
             },
             child: const Text(

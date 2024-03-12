@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:todomate/entry_point.dart';
+import 'package:todomate/screen/entry_point.dart';
 import 'package:todomate/function/login_function.dart';
 import 'package:todomate/screen/login_screen/login_screen.dart';
 
@@ -13,10 +13,10 @@ class SplashScreen extends StatelessWidget {
           if (snapshot.hasData) {
             print(snapshot.data);
             if(snapshot.data == true){
-              return EntryPoint();
+              return const EntryPoint();
             }
             else{
-              return LoginScreen();
+              return const LoginScreen();
             }
           }
           return const CircularProgressIndicator();

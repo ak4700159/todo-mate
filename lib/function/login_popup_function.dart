@@ -16,7 +16,7 @@ showLoginPopup(BuildContext context) {
       return AlertDialog(
         surfaceTintColor: Colors.white,
         backgroundColor: Colors.white,
-        actionsPadding: EdgeInsets.all(8),
+        actionsPadding: const EdgeInsets.all(8),
         shape: Border.all(width: 1),
         title: const Text('로그인'),
         content: Form(

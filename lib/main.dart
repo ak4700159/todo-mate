@@ -1,12 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:todomate/screen/login_screen/login_screen.dart';
 import 'package:todomate/screen/login_screen/register_screen.dart';
-import 'package:todomate/entry_point.dart';
-import 'package:todomate/splash_screen.dart';
+import 'package:todomate/screen/entry_point.dart';
+import 'package:todomate/screen/login_screen/splash_screen.dart';
 
 
 void main() {
-  runApp(const MyApp());
+  initializeDateFormatting().then((_) => runApp(const MyApp()));
 }
 
 class MyApp extends StatelessWidget {
@@ -16,8 +17,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       routes: {
-        '/login_screen' : (context) => LoginScreen(),
-        '/entry_point' : (context) => EntryPoint(),
+        '/login_screen' : (context) => const LoginScreen(),
+        '/entry_point' : (context) => const EntryPoint(),
         '/register_screen' : (context) => RegisterScreen(),
         '/splash_screen' : (context) => SplashScreen(),
       },
